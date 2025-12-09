@@ -102,10 +102,6 @@ namespace AdventOfCode
             public Tuple<Int64, Int64> X1Y2() => new Tuple<Int64, Int64>(X1, Y2);
             public Tuple<Int64, Int64> X2Y1() => new Tuple<Int64, Int64>(X2, Y1);
             public Tuple<Int64, Int64> X2Y2() => new Tuple<Int64, Int64>(X2, Y2);
-
-
-
-
         }
 
         // https://en.wikipedia.org/wiki/Rectilinear_polygon
@@ -129,7 +125,8 @@ namespace AdventOfCode
 
             public bool ContainsRectangleFormedByPoints(Rectangle rectangle)
             {
-                //If one of the corners is not inside the polygon, obviously it is not inside the polygon. This probably shound never happen, since all rectangles are made from boundary points?
+                // If one of the corners is not inside the polygon, obviously it is not inside the polygon. 
+                // This can happen, since we are defining each rectangle from just two corners
                 if(   !ContainsPoint(rectangle.X1Y1())
                    || !ContainsPoint(rectangle.X1Y2()) 
                    || !ContainsPoint(rectangle.X2Y1())
@@ -202,9 +199,13 @@ namespace AdventOfCode
                     //Every time we cross an edge we are either entering or exiting. So if we cross an odd number of points, then we are inside
                     if(startVertice.Item1 == endVertice.Item1) //Make sure we are on a horizontal edge again
                     {
-                        if(point.Item1 > startVertice.Item1 && IsValueBetween(point.Item2,startVertice.Item2, endVertice.Item2) && point.Item2 != endVertice.Item2)
+                        if(point.Item1 > startVertice.Item1 && IsValueBetween(point.Item2,startVertice.Item2, endVertice.Item2))
                         {
-                            noOfIntersections++;
+                            //Don't count intersections with corners as double intersections? Only count them on one of the edges
+                            if(point.Item2 != endVertice.Item2)
+                            {
+                                noOfIntersections++;
+                            } 
                         }
                     }
                 }
